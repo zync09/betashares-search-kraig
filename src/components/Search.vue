@@ -23,7 +23,7 @@
       <div class="flex flex-col " data-id="results">
         <div class="bg-white  max-h-[390px] overflow-y-auto" :class="{ 'rounded-b-xl': searchResults.count === 0 }">
           <ul class="flex  flex-col divide-y" v-if="searchResults.count > 0">
-            <SearchItem v-for="result in searchResults.results" :key="result.display_name" :result="result" :is-loading="isLoading" />
+            <SearchItem v-for="result in searchResults.results" :key="result.symbol_openfigi" :result="result" :is-loading="isLoading" />
           </ul>
           <div class="flex gap-2 flex-col p-4" v-else>
             <h4 class="text-sm uppercase">No results found</h4>
@@ -50,6 +50,7 @@ import SearchIcon from '../svg/SearchIcon.vue'
 import Betashares from '../svg/betashares.vue'
 import LoadingSpinner from './ui/LoadingSpinner.vue'
 import SearchItem from './SearchItem.vue'
+
 import FilterBar from './FilterBar.vue'
 
 import { useDebounceFn } from '@vueuse/core'
