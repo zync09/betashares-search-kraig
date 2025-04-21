@@ -11,7 +11,7 @@
   </form>
   <!-- results -->
   <div class="flex flex-col gap-2" data-id="results" v-if="searchResultsData?.results?.length > 0">
-    <pre>{{ searchResultsData }}</pre>
+    <SearchResults :searchResults="searchResultsData" />
   </div>
 
 </template>
@@ -22,6 +22,7 @@ import { useSearch } from '../composables/Search'
 
 import ClearButton from './ui/ClearButton.vue'
 import SearchIcon from '../svg/SearchIcon.vue'
+import SearchResults from './SearchResults.vue'
 import LoadingSpinner from './ui/LoadingSpinner.vue'
 
 const { searchResultsData, isLoading, startSearch, clearResults, searchText } = useSearch()
