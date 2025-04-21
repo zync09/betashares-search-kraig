@@ -1,6 +1,29 @@
 import { useDebounceFn } from '@vueuse/core';
 import { ref } from 'vue';
 
+export interface IFilters {
+  dividend_frequency?: 'Annually' | 'Semiannually' | 'Quarterly' | 'Monthly' | null;
+  management_approach?: 'Active' | 'Passive' | 'Hyrid' | null;
+  investment_suitability?: 'Capital growth' | 'Capital growth and regular income' | 'Regular income' | 'Income distribution' | null;
+  fund_category?: 'Australian Equities' | 'Cash' | 'Australian Bonds' | 'Technology' | 'Shorts Funds & Geared Funds' | null;
+  one_year_return?: {
+    min: string | null;
+    max: string | null;
+  };
+  five_year_return?: {
+    min: string | null;
+    max: string | null;
+  };
+  management_fee?: {
+    min: string | null;
+    max: string | null;
+  };
+  fund_size?: {
+    min: string | null;
+    max: string | null;
+  };
+}
+
 export interface IResult {
   is_flagship_fund: boolean;
   flagship_description_short: string | null;
@@ -63,10 +86,13 @@ export function useSearch() {
 
   const isLoading = ref(false);
   const error = ref<string | null>(null);
+  const filters = ref<IFilters>({});
   const searchText = ref('');
+  const hasCompletedSearch = ref(false);
 
   const resetSearchResults = () => {
     searchResultsData.value = initialSearchResults;
+    hasCompletedSearch.value = false;
   };
 
   const clearResults = () => {
@@ -79,6 +105,11 @@ export function useSearch() {
     isLoading.value = true;
     error.value = null;
     return await _performSearch(searchText);
+  };
+
+  const setFilters = (filters: IFilters) => {
+    filters = filters;
+    startSearch(searchText.value);
   };
 
   const _performSearch = useDebounceFn(async (searchText: string) => {
@@ -95,6 +126,8 @@ export function useSearch() {
         },
         body: JSON.stringify({
           search_text: searchText,
+          //spead filters if any are set
+          ...filters.value,
         }),
       });
 
@@ -109,6 +142,7 @@ export function useSearch() {
       resetSearchResults();
     } finally {
       isLoading.value = false;
+      hasCompletedSearch.value = true;
     }
   }, 550);
 
@@ -117,6 +151,8 @@ export function useSearch() {
     isLoading,
     error,
     searchText,
+    hasCompletedSearch,
+    setFilters,
     startSearch,
     clearResults,
   };
