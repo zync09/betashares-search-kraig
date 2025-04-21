@@ -1,5 +1,5 @@
 <template>
-  <button class="hover:bg-secondary-300 transition-all duration-300 px-4 py-3 flex gap-1 items-center" v-if="!isLoading">
+  <button class="hover:bg-secondary-400 transition-all duration-300 px-4 py-3 flex gap-1 items-center" v-if="!isLoading">
     <div class="bg-primary hover:brightness-125 text-white w-14 justify-center rounded-full px-2 py-1 text-xs flex gap-2 items-center">
       <FlagshipIcon v-if="result.is_flagship_fund" />
       <span>{{ result.symbol }}</span>
