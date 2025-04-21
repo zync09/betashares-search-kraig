@@ -1,4 +1,3 @@
-import { useDebounceFn } from '@vueuse/core';
 import { ref } from 'vue';
 
 export interface IFilters {
@@ -86,8 +85,7 @@ export function useSearch() {
 
   const isLoading = ref(false);
   const error = ref<string | null>(null);
-  const filters = ref<IFilters>({});
-  const searchText = ref('');
+
   const hasCompletedSearch = ref(false);
 
   const resetSearchResults = () => {
@@ -96,39 +94,35 @@ export function useSearch() {
   };
 
   const clearResults = () => {
-    searchText.value = '';
     resetSearchResults();
     error.value = null;
   };
 
-  const startSearch = async (searchText: string) => {
+  const startSearch = async (searchText: string, page: number, filters: object) => {
     isLoading.value = true;
     error.value = null;
-    return await _performSearch(searchText);
-  };
 
-  const setFilters = (filters: IFilters) => {
-    filters = filters;
-    startSearch(searchText.value);
-  };
-
-  const _performSearch = useDebounceFn(async (searchText: string) => {
     if (!searchText.trim()) {
       resetSearchResults();
       return;
     }
 
     try {
+      let body = {
+        search_text: searchText,
+        from: page,
+        size: 10,
+      };
+      if (filters) {
+        body = { ...body, ...filters };
+      }
+
       const response = await fetch(`https://search.betashares.services/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          search_text: searchText,
-          //spead filters if any are set
-          ...filters.value,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -144,15 +138,13 @@ export function useSearch() {
       isLoading.value = false;
       hasCompletedSearch.value = true;
     }
-  }, 550);
+  };
 
   return {
     searchResultsData,
     isLoading,
     error,
-    searchText,
     hasCompletedSearch,
-    setFilters,
     startSearch,
     clearResults,
   };
