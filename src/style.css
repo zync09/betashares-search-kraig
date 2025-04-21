@@ -1,3 +1,11 @@
+@import url(https://db.onlinewebfonts.com/c/f8f02ccd4a027f7cccb4e9ac22f959c2?family=Rund+Text);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Rund Text';
+  src: url('https://db.onlinewebfonts.com/t/f8f02ccd4a027f7cccb4e9ac22f959c2.eot');
+  src: url('https://db.onlinewebfonts.com/t/f8f02ccd4a027f7cccb4e9ac22f959c2.eot?#iefix') format('embedded-opentype'), url('https://db.onlinewebfonts.com/t/f8f02ccd4a027f7cccb4e9ac22f959c2.woff2') format('woff2'), url('https://db.onlinewebfonts.com/t/f8f02ccd4a027f7cccb4e9ac22f959c2.woff') format('woff'), url('https://db.onlinewebfonts.com/t/f8f02ccd4a027f7cccb4e9ac22f959c2.ttf') format('truetype'), url('https://db.onlinewebfonts.com/t/f8f02ccd4a027f7cccb4e9ac22f959c2.svg#Rund Text') format('svg');
+}

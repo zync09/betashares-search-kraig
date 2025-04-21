@@ -55,6 +55,9 @@ export default {
         },
         black: '#09090a',
       },
+      fontFamily: {
+        'rund-text': ['Rund Text', 'sans-serif'],
+      },
     },
   },
   plugins: [],
