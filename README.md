@@ -1,6 +1,7 @@
 # BetaShares Search App Test by Kraig Burrows
 
 A modern Vue.js search application built with Vue 3, TypeScript, and PrimeVue components.
+![Screenshot 2025-04-23 083233](https://github.com/user-attachments/assets/d4057b44-b89d-4735-9523-88fc8bb9055c)
 
 ## Features
 
