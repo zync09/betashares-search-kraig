@@ -1,10 +1,38 @@
 import { ref } from 'vue';
 
+export enum DividendFrequency {
+  Annually = 'Annually',
+  Semiannually = 'Semiannually',
+  Quarterly = 'Quarterly',
+  Monthly = 'Monthly',
+}
+
+export enum ManagementApproach {
+  Active = 'Active',
+  Passive = 'Passive',
+  Hybrid = 'Hybrid',
+}
+
+export enum InvestmentSuitability {
+  CapitalGrowth = 'Capital growth',
+  CapitalGrowthAndRegularIncome = 'Capital growth and regular income',
+  RegularIncome = 'Regular income',
+  IncomeDistribution = 'Income distribution',
+}
+
+export enum AssetCategory {
+  AustralianEquities = 'Australian Equities',
+  Cash = 'Cash',
+  AustralianBonds = 'Australian Bonds',
+  Technology = 'Technology',
+  ShortsFundsAndGearedFunds = 'Shorts Funds & Geared Funds',
+}
+
 export interface IFilters {
-  dividend_frequency?: 'Annually' | 'Semiannually' | 'Quarterly' | 'Monthly' | null;
-  management_approach?: 'Active' | 'Passive' | 'Hyrid' | null;
-  investment_suitability?: 'Capital growth' | 'Capital growth and regular income' | 'Regular income' | 'Income distribution' | null;
-  fund_category?: 'Australian Equities' | 'Cash' | 'Australian Bonds' | 'Technology' | 'Shorts Funds & Geared Funds' | null;
+  dividend_frequency: DividendFrequency[];
+  management_approach: ManagementApproach[];
+  investment_suitability: InvestmentSuitability[];
+  asset_categories: AssetCategory[];
   one_year_return?: {
     min: string | null;
     max: string | null;

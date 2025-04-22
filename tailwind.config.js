@@ -56,7 +56,8 @@ export default {
         black: '#09090a',
       },
       fontFamily: {
-        'rund-text': ['Rund Text', 'sans-serif'],
+        rund: ['Rund Text', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
       },
       animation: {
         shimmer: 'shimmer 1.5s infinite',
