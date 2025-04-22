@@ -8,7 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Checkbox: typeof import('./src/components/ui/Checkbox.vue')['default']
+    Button: typeof import('primevue/button')['default']
+    Checkbox: typeof import('primevue/checkbox')['default']
     ClearButton: typeof import('./src/components/ui/ClearButton.vue')['default']
     FilterBar: typeof import('./src/components/FilterBar.vue')['default']
     FilterButton: typeof import('./src/components/ui/FilterButton.vue')['default']
@@ -16,6 +17,8 @@ declare module 'vue' {
     Pagination: typeof import('./src/components/ui/Pagination.vue')['default']
     Search: typeof import('./src/components/Search.vue')['default']
     SearchItem: typeof import('./src/components/SearchItem.vue')['default']
+    Select: typeof import('primevue/select')['default']
+    SelectButton: typeof import('primevue/selectbutton')['default']
     Slider: typeof import('primevue/slider')['default']
   }
 }

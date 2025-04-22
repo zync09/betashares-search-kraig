@@ -126,7 +126,22 @@ export function useSearch() {
     error.value = null;
   };
 
-  const startSearch = async (searchText: string, page: number, filters: object) => {
+  //this should format each filter from eg. [0, 100] to "min": "0", "max": "100" - they should be string as noted in the documentation
+  const formatMinMaxFilters = (filters: object) => {
+    //only apply to five_year_return and one_year_return and management_fee and fund_size
+    const includeFilters = ['five_year_return', 'one_year_return', 'management_fee', 'fund_size'];
+
+    return Object.fromEntries(
+      Object.entries(filters).map(([key, value]) => {
+        if (Array.isArray(value) && includeFilters.includes(key)) {
+          return [key, { min: value[0].toString(), max: value[1].toString() }];
+        }
+        return [key, value];
+      })
+    );
+  };
+
+  const startSearch = async (searchText: string, page: number, filters: object, sort: string) => {
     isLoading.value = true;
     error.value = null;
 
@@ -136,15 +151,17 @@ export function useSearch() {
     }
 
     try {
-      let body = {
+      let body: Partial<object> = {
         search_text: searchText,
         from: page,
         size: 10,
       };
-      if (filters) {
-        body = { ...body, ...filters };
+      if (filters !== null) {
+        body = { ...body, ...formatMinMaxFilters(filters) };
       }
-
+      if (sort) {
+        body = { ...body, order_by: sort };
+      }
       const response = await fetch(`https://search.betashares.services/search`, {
         method: 'POST',
         headers: {

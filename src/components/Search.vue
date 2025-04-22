@@ -2,15 +2,15 @@
   <div class="flex justify-center items-center mb-10">
     <Betashares />
   </div>
-  <form class="flex items-center gap-2 w-full transition-all">
+  <form class="flex items-center gap-2 w-full ">
     <div
-      class="rounded-xl h-10 px-2 bg-white w-full flex items-center gap-2 space-between overflow-hidden transition-all"
+      class="rounded-xl h-10 px-2 bg-white w-full flex items-center gap-2 space-between overflow-hidden  border-b border-b-black/20"
       :class="{ 'rounded-b-none': hasCompletedSearch }"
     >
       <input
         type="text"
         v-model="searchText"
-        class="w-full focus:outline-none pl-3 h-5 transition-all"
+        class="w-full focus:outline-none pl-3 h-5 "
         placeholder="Search the site by ASX code, fund name, phrase or topic"
       />
       <LoadingSpinner v-show="isLoading" />
@@ -18,20 +18,19 @@
         @click="toggleFilterBar"
         v-if="hasCompletedSearch"
       />
+
       <ClearButton
         v-show="searchText.length > 0"
         @click.prevent="handleClearButton"
       />
     </div>
-    <Transition name="grow">
-      <button
-        @click.prevent="doSearch"
-        class="p-2 rounded-full bg-primary text-white hover:text-black transition-all duration-300 size-10"
-        v-show="searchText.length === 0"
-      >
-        <SearchIcon />
-      </button>
-    </Transition>
+    <button
+      @click.prevent="doSearch"
+      class="p-2 rounded-full bg-primary text-white hover:text-black  duration-300 size-10"
+      v-show="searchText.length === 0"
+    >
+      <SearchIcon />
+    </button>
   </form>
 
   <div
@@ -40,12 +39,14 @@
   >
     <!-- Filters -->
     <div
-      class="grid transition-all duration-1000 ease-linear"
+      class="grid transition-all duration-500 ease-in-out bg-white"
       :class="isFilterBarOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
     >
-      <div class="overflow-hidden transition-all duration-1000 ease-linear">
+      <div class="overflow-hidden  ">
         <FilterBar
           @update:filters="updateFilters"
+          @update:sort="updateSort"
+          @clearSort="clearSort"
           class="origin-top"
         />
       </div>
@@ -55,7 +56,6 @@
     <div
       class="flex flex-col"
       data-id="results"
-      v-auto-animate
     >
       <div
         class="bg-white max-h-[390px] overflow-y-auto"
@@ -80,6 +80,7 @@
           <p class="text-sm">Please try searching for something else or remove some filters</p>
         </div>
       </div>
+      <!-- Pagination -->
       <Pagination
         :totalPages="totalPages"
         :activePage="activePage"
@@ -87,6 +88,7 @@
         :count="searchResults.count"
         @update:activePage="handlePageClick"
       />
+
     </div>
   </div>
 </template>
@@ -108,14 +110,16 @@ import FilterBar from './FilterBar.vue'
 
 import { useDebounceFn } from '@vueuse/core'
 
+const { searchResultsData, isLoading, hasCompletedSearch, clearResults, startSearch } = useSearch()
+
 const searchText = ref('')
 const searchFilters = ref({})
+const sortFilter = ref('five_year_return.desc')
+
 const activePage = ref(1)
 const pageSize = ref(10)
 const isFilterBarOpen = ref(false)
 
-
-const { searchResultsData, isLoading, hasCompletedSearch, clearResults, startSearch } = useSearch()
 
 const searchResults = computed(() => {
   return searchResultsData.value
@@ -139,6 +143,17 @@ const toggleFilterBar = () => {
   isFilterBarOpen.value = !isFilterBarOpen.value
 }
 
+const updateSort = (sort: string) => {
+  sortFilter.value = sort
+  activePage.value = 1
+  doSearch()
+}
+
+const clearSort = () => {
+  activePage.value = 1
+  doSearch()
+}
+
 const doSearch = () => {
   if (searchText.value.length < 2) return
   isLoading.value = true
@@ -147,8 +162,8 @@ const doSearch = () => {
 }
 
 const debounceSearch = useDebounceFn(() => {
-  startSearch(searchText.value, activePage.value, searchFilters.value)
-}, 550)
+  startSearch(searchText.value, activePage.value, searchFilters.value, sortFilter.value)
+}, 800)
 
 const updateFilters = (filters: object) => {
   searchFilters.value = filters
@@ -169,29 +184,4 @@ const handleClearButton = () => {
 
 </script>
 
-<style scoped>
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.grow-enter-active,
-.grow-leave-active,
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-}
-
-.grow-enter-from,
-.grow-leave-to {
-  opacity: 0;
-  transform: scaleY(0);
-  transform-origin: top;
-}
-
-.grow-enter-to,
-.grow-leave-from {
-  transform: scaleY(1);
-}
-</style>
+<style scoped></style>
